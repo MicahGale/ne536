@@ -252,7 +252,7 @@ params['name']='ITER'
 params['kind'       ] = 'tokamak'
 params['R'          ] = 6.2
 params['a'          ] = 2.0         # [m] minor radius
-params['distance_plasma_wall']=0.1 
+params['distance_plasma_wall']=0.05 
 params['kappa_s'    ] = 1.7         # []  elongation
 params['S'          ] = 2.6        # shaping factor
 params['B_tor'      ] = 5.2        # [T] toroidal magnetic field strength
@@ -284,23 +284,21 @@ params['P_heat'     ] = 143      # MW
 params["V"]           =141
 
 
-'''
 params['name']='Infinity Two' 
 params['kind'       ] = 'stellarator'
-params['R'          ] = 10.
-params['a_eff'          ] = 1.268        # [m] minor radius
+params['R'          ] = 12.5
+params['a_eff'          ] = 1.25        # [m] minor radius
 params['distance_plasma_wall']=0.1 
-params['B_tor'      ] = 8.2        # [T] toroidal magnetic field strength
-params['q_23'       ] = 1.0        # [MA]
+params['B_tor'      ] = 9.0        # [T] toroidal magnetic field strength
+params['q_23'       ] = 1.0#?????        # [MA]
 params['H_factor'   ] = 1.2        # []     confinment scaling factor
 params['M'   ] =        2.5        # mass of the main plasma species mix (D+T = 2.5)
-params['ne'        ] = 2.8         # [10^20/m^3] core electron density
+params['ne'        ] = 2.0         # [10^20/m^3] core electron density
 params['he4_dens']=0.05*params['ne']
 params['W_dens']=1.e-6*params['ne']
 params['DT_dens']=params['ne']-2* params['he4_dens']-50*params['W_dens']
-params['P_heat'     ] = 70.0       # MW
+params['P_heat'     ] = 80.0 #????       # MW
 params['rho_star']=5
-'''
 
 ## ----------------------------------------------------------------------------
 ## ----------------- Print Results --------------------------------------------
