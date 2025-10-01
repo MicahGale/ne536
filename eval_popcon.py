@@ -267,23 +267,22 @@ params['DT_dens']=params['ne']-2* params['he4_dens']-50*params['W_dens']
 params['P_heat'     ] = 60.0       # MW
 params['rho_star']=5
 
-'''
 params['name']='SPARC' 
 params['kind'       ] = 'tokamak'
-params['R'          ] = 1.85
-params['a'          ] = 0.75        # [m] minor radius
-params['distance_plasma_wall']=0.1 
-params['kappa_s'    ] = 1.97        # []  elongation
+params['R'          ] = 3.3
+params['a'          ] = 1.13        # [m] minor radius
+params['distance_plasma_wall']=0.10 
+params['kappa_s'    ] = 1.84        # []  elongation
 params['S'          ] = 2.63       # shaping factor
-params['B_tor'      ] = 12.2        # [T] toroidal magnetic field strength
-params['I_p'        ] = 8.7        # [MA]
-params['H_factor'   ] = 1.         # []     confinment scaling factor
+params['B_tor'      ] = 9.2        # [T] toroidal magnetic field strength
+params['I_p'        ] = 7.8        # [MA]
+params['H_factor'   ] = 1.78        # []     confinment scaling factor
 params['M'   ] = 2.5  ## mass of the main plasma species mix (D+T = 2.5)
-params['ne'        ] = 2.8       # [10^20/m^3] core electron density
+params['ne'        ] = 1.3       # [10^20/m^3] core electron density
 params['he4_dens']=0.05*params['ne']
 params['W_dens']=1.e-6*params['ne']
-params['P_heat'     ] = 25.0       # MW
-'''
+params['P_heat'     ] = 143      # MW
+params["V"]           =141
 
 
 '''
