@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import matplotlib as matplotlib
 import os
 matplotlib.rcParams.update({'figure.max_open_warning':False})
-plt.rcParams["font.family"] = "Times New Roman"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 matplotlib.rcParams.update({'font.size': 18})
 plt.close('all')
@@ -413,3 +412,4 @@ plt.legend(handles=handles, loc="lower left",fontsize=9)
 plt.ylabel(r'$<n_e>$ [10$^{20}$m$^{-3}$]')
 plt.xlabel(r'$<T>$ [keV]')
 plt.subplots_adjust(left=0.2, right=0.9, top=0.9, bottom=0.2)
+plt.show()
