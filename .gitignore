@@ -1,4 +1,4 @@
 *.sw*
 
 __pycache__
-.ipynb_*
+.ipynb_checkpoints/
