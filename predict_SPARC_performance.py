@@ -13,19 +13,19 @@ plt.close('all')
 params = {}
 params['name']='SPARC' 
 params['kind'       ] = 'tokamak'
-params['R'          ] = 1.85
-params['a'          ] = 0.75        # [m] minor radius
-params['kappa_s'    ] = 1.97        # []  elongation
+params['R'          ] = 3.3
+params['a'          ] = 1.13        # [m] minor radius
+params['kappa_s'    ] = 1.84        # []  elongation
 params['S'          ] = 2.63       # shaping factor
-params['B_tor'      ] = 12.2        # [T] toroidal magnetic field strength
-params['I_p'        ] = 8.7        # [MA]
+params['B_tor'      ] = 9.2        # [T] toroidal magnetic field strength
+params['I_p'        ] = 7.8        # [MA]
 
-params['H_factor'   ] = 1.         # []     confinment scaling factor
+params['H_factor'   ] = 1.8         # []     confinment scaling factor
 params['f_alpha_loss'] = 0.02      # []     alpha particle loss fraction
 params['fueling_mix']=[0.5,0.5,0.]
 
 ## Density profile settings
-params['n_0'        ] = 3.5       # [10^20/m^3] core electron density
+params['n_0'        ] = 3.0       # [10^20/m^3] core electron density
 params['mu_n'       ] = 0.5        # []     electron density peaking
 params['offset_n'   ] = 0.5        # [10^20/m^3]
 
