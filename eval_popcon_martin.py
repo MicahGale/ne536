@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import matplotlib as matplotlib
 import os
 matplotlib.rcParams.update({'figure.max_open_warning':False})
-plt.rcParams["font.family"] = "Times New Roman"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 matplotlib.rcParams.update({'font.size': 18})
 plt.close('all')
@@ -395,13 +394,6 @@ def main(params=None):
             P_LH_arr[ii,jj]=calc_martin_scaling(params)
             P_abs_arr[ii,jj]=params['P_abs']
 
-    plt.figure()
-    cs1=plt.contourf(ne_arr,T_target_arr,np.transpose(T_arr))
-    cbar = plt.colorbar(cs1)
-    cbar.set_label(r'$<T>$ [keV]')
-    plt.xlabel(r'$<n_e>$ [10$^{20}$m$^{-3}$]')
-    plt.ylabel(r'$<T>$ [keV]')
-    plt.subplots_adjust(left=0.2, right=0.9, top=0.9, bottom=0.2)
 
 
     plt.figure()
