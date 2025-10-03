@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import matplotlib as matplotlib
 import os
 matplotlib.rcParams.update({'figure.max_open_warning':False})
-plt.rcParams["font.family"] = "Times New Roman"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 matplotlib.rcParams.update({'font.size': 18})
 
