@@ -246,168 +246,166 @@ def find_temperature_solution(params):
 ## ----------------------------------------------------------------------------
 ## ------------------------------- Device Settings ----------------------------
 ## ----------------------------------------------------------------------------
-params = {}
+def main(params = None):
+    if params is None:
+        params = {}
 
-params['name']='ITER' 
-params['kind'       ] = 'tokamak'
-params['R'          ] = 6.2
-params['a'          ] = 2.0         # [m] minor radius
-params['distance_plasma_wall']=0.05 
-params['kappa_s'    ] = 1.7         # []  elongation
-params['S'          ] = 2.6        # shaping factor
-params['B_tor'      ] = 5.2        # [T] toroidal magnetic field strength
-params['I_p'        ] = 15.        # [MA]
-params['H_factor'   ] = 1.0       # []     confinment scaling factor
-params['M'   ] = 2.5  ## mass of the main plasma species mix (D+T = 2.5)
-params['ne'        ] = 1.0       # [10^20/m^3] core electron density
-params['he4_dens']=0.05*params['ne']
-params['W_dens']=1.e-9*params['ne']
-params['DT_dens']=params['ne']-2* params['he4_dens']-50*params['W_dens']
-params['P_heat'     ] = 60.0       # MW
-params['rho_star']=5
+        params['name']='ITER' 
+        params['kind'       ] = 'tokamak'
+        params['R'          ] = 6.2
+        params['a'          ] = 2.0         # [m] minor radius
+        params['distance_plasma_wall']=0.05 
+        params['kappa_s'    ] = 1.7         # []  elongation
+        params['S'          ] = 2.6        # shaping factor
+        params['B_tor'      ] = 5.2        # [T] toroidal magnetic field strength
+        params['I_p'        ] = 15.        # [MA]
+        params['H_factor'   ] = 1.0       # []     confinment scaling factor
+        params['M'   ] = 2.5  ## mass of the main plasma species mix (D+T = 2.5)
+        params['ne'        ] = 1.0       # [10^20/m^3] core electron density
+        params['he4_dens']=0.05*params['ne']
+        params['W_dens']=1.e-9*params['ne']
+        params['DT_dens']=params['ne']-2* params['he4_dens']-50*params['W_dens']
+        params['P_heat'     ] = 60.0       # MW
+        params['rho_star']=5
 
-params['name']='SPARC' 
-params['kind'       ] = 'tokamak'
-params['R'          ] = 3.3
-params['a'          ] = 1.13        # [m] minor radius
-params['distance_plasma_wall']=0.10 
-params['kappa_s'    ] = 1.84        # []  elongation
-params['S'          ] = 2.63       # shaping factor
-params['B_tor'      ] = 9.2        # [T] toroidal magnetic field strength
-params['I_p'        ] = 7.8        # [MA]
-params['H_factor'   ] = 1.78        # []     confinment scaling factor
-params['M'   ] = 2.5  ## mass of the main plasma species mix (D+T = 2.5)
-params['ne'        ] = 1.3       # [10^20/m^3] core electron density
-params['he4_dens']=0.05*params['ne']
-params['W_dens']=1.e-6*params['ne']
-params['P_heat'     ] = 143      # MW
-params["V"]           =141
-
-
-params['name']='Infinity Two' 
-params['kind'       ] = 'stellarator'
-params['R'          ] = 12.5
-params['a_eff'          ] = 1.25        # [m] minor radius
-params['distance_plasma_wall']=0.1 
-params['B_tor'      ] = 9.0        # [T] toroidal magnetic field strength
-params['q_23'       ] = 1.0#?????        # [MA]
-params['H_factor'   ] = 1.2        # []     confinment scaling factor
-params['M'   ] =        2.5        # mass of the main plasma species mix (D+T = 2.5)
-params['ne'        ] = 2.0         # [10^20/m^3] core electron density
-params['he4_dens']=0.05*params['ne']
-params['W_dens']=1.e-6*params['ne']
-params['DT_dens']=params['ne']-2* params['he4_dens']-50*params['W_dens']
-params['P_heat'     ] = 80.0 #????       # MW
-params['rho_star']=5
-
-## ----------------------------------------------------------------------------
-## ----------------- Print Results --------------------------------------------
-## ----------------------------------------------------------------------------
-calc_fusion_product_energyies(params)
-get_cooling_rates(params)
-
-if params['kind']=='tokamak':
-    params['a_eff']=params['a']*np.sqrt(params['kappa_s']) #[m] effective minor radius
-    params['K']=np.sqrt((1+params['kappa_s']**2)/(2*params['kappa_s']))
-else:
-    params['q_95']=params['q_23']
-    params['a']=params['a_eff']
-params[ 'V'         ] =  2.*np.pi**2 * params['R'] * params['a_eff']**2
-print('---- '+params['name']+ ' '+params['kind']+' setup ----')
-print('{:<21s}'.format('R:'),'{:<.2f}'.format(params['R']),'\tm')
-print('{:<21s}'.format('a_eff:'), '{:<.2f}'.format(params['a_eff']),'\tm')
-print('{:<21s}'.format('Volume:'), '{:<.2f}'.format(params['V']),'\tm^3')    
-print('{:<21s}'.format('aspect ratio:'), '{:<.1f}'.format(params['R']/params['a']))
-print('{:<21s}'.format('B:'), '{:<.1f}'.format(params['B_tor']),'\tT')
-if params['kind']== 'tokamak': 
-    print('{:<21s}'.format('Ip:'), '{:<.2f}'.format( params['I_p']),'\tMA')         
-    print('{:<21s}'.format('q95:'), '{:<.2f}'.format(calc_q95(params)))
-print('{:<21s}'.format('H factor:'), params['H_factor'])
-print('{:<21s}'.format('DT density:'), '{:<.1f}'.format(params['DT_dens']/params['ne']*100),'%')
-print('{:<21s}'.format('W density:'), '{:<.1e}'.format(params['W_dens']/params['ne']*100),'%')
-if params['kind']== 'tokamak':
-    print('{:<21s}'.format('Greenwald limit:'), '{:<3.1e}'.format(calc_density_limit( params )*1.e20), '\t1/m^3')
+        params['name']='SPARC' 
+        params['kind'       ] = 'tokamak'
+        params['R'          ] = 3.3
+        params['a'          ] = 1.13        # [m] minor radius
+        params['distance_plasma_wall']=0.10 
+        params['kappa_s'    ] = 1.84        # []  elongation
+        params['S'          ] = 2.63       # shaping factor
+        params['B_tor'      ] = 9.2        # [T] toroidal magnetic field strength
+        params['I_p'        ] = 7.8        # [MA]
+        params['H_factor'   ] = 1.78        # []     confinment scaling factor
+        params['M'   ] = 2.5  ## mass of the main plasma species mix (D+T = 2.5)
+        params['ne'        ] = 1.3       # [10^20/m^3] core electron density
+        params['he4_dens']=0.05*params['ne']
+        params['W_dens']=1.e-6*params['ne']
+        params['P_heat'     ] = 143      # MW
+        params["V"]           =141
 
 
-
-nne=10
-ne_arr=np.linspace(0.5,2.5,num=nne,endpoint=True)
-nT=11
-T_target_arr=np.linspace(1,15,num=nT,endpoint=True)
-
-P_fusion_arr=np.zeros((nne,nT))
-Q_arr=np.zeros((nne,nT))
-P_heat_arr=np.zeros((nne,nT))
-T_arr=np.zeros((nne,nT))
-P_el_arr=np.zeros((nne,nT))
-
-npheat=2000
-pheat_arr_check=np.linspace(1.,2000,num=npheat)
-for ii,ne in enumerate(ne_arr):
-    params['P_heat']=0.1
-    for jj,T_target in enumerate(T_target_arr):
-        params['ne']=ne
+        params['name']='Infinity Two' 
+        params['kind'       ] = 'stellarator'
+        params['R'          ] = 12.5
+        params['a_eff'          ] = 1.25        # [m] minor radius
+        params['distance_plasma_wall']=0.1 
+        params['B_tor'      ] = 9.0        # [T] toroidal magnetic field strength
+        params['q_23'       ] = 1.0#?????        # [MA]
+        params['H_factor'   ] = 1.2        # []     confinment scaling factor
+        params['M'   ] =        2.5        # mass of the main plasma species mix (D+T = 2.5)
+        params['ne'        ] = 2.0         # [10^20/m^3] core electron density
         params['he4_dens']=0.05*params['ne']
         params['W_dens']=1.e-6*params['ne']
         params['DT_dens']=params['ne']-2* params['he4_dens']-50*params['W_dens']
-        T=0
-        while T < T_target:
-        #for kk,p_heat in enumerate(pheat_arr_check):
-            params['P_heat']*=1.01#MW
-            ## ----------------------------------------------------------------------------
-            ## ----------------- Iteratively calcluate the solution------------------------
-            ## ----------------------------------------------------------------------------
-            T=find_temperature_solution(params)
-            
-            
-        Q=params['P_DT_alpha']*5/params['P_heat']
-        '''
-        print(T_target)
-        print('{:<21s}'.format('Q:'), '{:<.1f}'.format(Q))
-        print('{:<21s}'.format('P heat:'), '{:<.2f}'.format(params['P_heat']),'\tMW') 
-        print('{:<21s}'.format('Electron density:'), '{:<.2e}'.format(params['ne']*1.e20),'\t1/m^3')
-        print('{:<21s}'.format('T:'),'{:<.2e}'.format(params['T']),' keV')
-        print('{:<21s}'.format('He4 density:'), '{:<.1f}'.format(params['he4_dens']/params['ne']*100),'%')
-       '''
-        P_el,P_recirc=calc_net_electrical_power(params)
-        #print('{:<21s}'.format('Electrical power out:'), '{:<.3f}'.format(P_el/1.e3),'\tGW')
-        params['NWL']= calc_neutron_wall_loading(params)
-        T_arr[ii,jj]=params['T']
-        P_fusion_arr[ii,jj]=params['P_DT_alpha']*5
-        Q_arr[ii,jj]=Q
-        P_heat_arr[ii,jj]=params['P_heat']
-        P_el_arr[ii,jj]=P_el
+        params['P_heat'     ] = 80.0 #????       # MW
+        params['rho_star']=5
 
+    ## ----------------------------------------------------------------------------
+    ## ----------------- Print Results --------------------------------------------
+    ## ----------------------------------------------------------------------------
+    calc_fusion_product_energyies(params)
+    get_cooling_rates(params)
 
-plt.figure()
-cs1=plt.contourf(ne_arr,T_target_arr,np.transpose(T_arr))
-cbar = plt.colorbar(cs1)
-cbar.set_label(r'$<T>$ [keV]')
-plt.xlabel(r'$<n_e>$ [10$^{20}$m$^{-3}$]')
-plt.ylabel(r'$<T>$ [keV]')
-plt.subplots_adjust(left=0.2, right=0.9, top=0.9, bottom=0.2)
-
-
-plt.figure()
-cs2=plt.contour(T_target_arr,ne_arr,P_el_arr,colors='k',levels=5)
-plt.clabel(cs2,inline=True,inline_spacing=5, fmt="%.0f", fontsize=9)
-
-
-cs3=plt.contour(T_target_arr,ne_arr,Q_arr,colors='blue',levels=5)
-plt.clabel(cs3,inline=True,inline_spacing=5, fmt="%.2f", fontsize=9)
-
-
-cs3=plt.contour(T_target_arr,ne_arr,P_heat_arr,colors='r',levels=5)
-plt.clabel(cs3,inline=True,inline_spacing=5, fmt="%.0f", fontsize=9)
+    if params['kind']=='tokamak':
+        params['a_eff']=params['a']*np.sqrt(params['kappa_s']) #[m] effective minor radius
+        params['K']=np.sqrt((1+params['kappa_s']**2)/(2*params['kappa_s']))
+    else:
+        params['q_95']=params['q_23']
+        params['a']=params['a_eff']
+    params[ 'V'         ] =  2.*np.pi**2 * params['R'] * params['a_eff']**2
+    print('---- '+params['name']+ ' '+params['kind']+' setup ----')
+    print('{:<21s}'.format('R:'),'{:<.2f}'.format(params['R']),'\tm')
+    print('{:<21s}'.format('a_eff:'), '{:<.2f}'.format(params['a_eff']),'\tm')
+    print('{:<21s}'.format('Volume:'), '{:<.2f}'.format(params['V']),'\tm^3')    
+    print('{:<21s}'.format('aspect ratio:'), '{:<.1f}'.format(params['R']/params['a']))
+    print('{:<21s}'.format('B:'), '{:<.1f}'.format(params['B_tor']),'\tT')
+    if params['kind']== 'tokamak': 
+        print('{:<21s}'.format('Ip:'), '{:<.2f}'.format( params['I_p']),'\tMA')         
+        print('{:<21s}'.format('q95:'), '{:<.2f}'.format(calc_q95(params)))
+    print('{:<21s}'.format('H factor:'), params['H_factor'])
+    print('{:<21s}'.format('DT density:'), '{:<.1f}'.format(params['DT_dens']/params['ne']*100),'%')
+    print('{:<21s}'.format('W density:'), '{:<.1e}'.format(params['W_dens']/params['ne']*100),'%')
+    if params['kind']== 'tokamak':
+        print('{:<21s}'.format('Greenwald limit:'), '{:<3.1e}'.format(calc_density_limit( params )*1.e20), '\t1/m^3')
 
 
 
-handles = [plt.Line2D([0], [0], color="k", lw=1, label=r'$P_{el}$ [MW]'),
-    plt.Line2D([0], [0], color="blue", lw=1, label="Q"),
-    plt.Line2D([0], [0], color="r", lw=1, label=r'$P_{HCD}$ [MW]'),]
-plt.legend(handles=handles, loc="lower left",fontsize=9)
+    nne=10
+    ne_arr=np.linspace(0.5,2.5,num=nne,endpoint=True)
+    nT=11
+    T_target_arr=np.linspace(1,15,num=nT,endpoint=True)
 
-plt.ylabel(r'$<n_e>$ [10$^{20}$m$^{-3}$]')
-plt.xlabel(r'$<T>$ [keV]')
-plt.subplots_adjust(left=0.2, right=0.9, top=0.9, bottom=0.2)
-plt.show()
+    P_fusion_arr=np.zeros((nne,nT))
+    Q_arr=np.zeros((nne,nT))
+    P_heat_arr=np.zeros((nne,nT))
+    T_arr=np.zeros((nne,nT))
+    P_el_arr=np.zeros((nne,nT))
+
+    npheat=2000
+    pheat_arr_check=np.linspace(1.,2000,num=npheat)
+    for ii,ne in enumerate(ne_arr):
+        params['P_heat']=0.1
+        for jj,T_target in enumerate(T_target_arr):
+            params['ne']=ne
+            params['he4_dens']=0.05*params['ne']
+            params['W_dens']=1.e-6*params['ne']
+            params['DT_dens']=params['ne']-2* params['he4_dens']-50*params['W_dens']
+            T=0
+            while T < T_target:
+            #for kk,p_heat in enumerate(pheat_arr_check):
+                params['P_heat']*=1.01#MW
+                ## ----------------------------------------------------------------------------
+                ## ----------------- Iteratively calcluate the solution------------------------
+                ## ----------------------------------------------------------------------------
+                T=find_temperature_solution(params)
+                
+                
+            Q=params['P_DT_alpha']*5/params['P_heat']
+            '''
+            print(T_target)
+            print('{:<21s}'.format('Q:'), '{:<.1f}'.format(Q))
+            print('{:<21s}'.format('P heat:'), '{:<.2f}'.format(params['P_heat']),'\tMW') 
+            print('{:<21s}'.format('Electron density:'), '{:<.2e}'.format(params['ne']*1.e20),'\t1/m^3')
+            print('{:<21s}'.format('T:'),'{:<.2e}'.format(params['T']),' keV')
+            print('{:<21s}'.format('He4 density:'), '{:<.1f}'.format(params['he4_dens']/params['ne']*100),'%')
+           '''
+            P_el,P_recirc=calc_net_electrical_power(params)
+            #print('{:<21s}'.format('Electrical power out:'), '{:<.3f}'.format(P_el/1.e3),'\tGW')
+            params['NWL']= calc_neutron_wall_loading(params)
+            T_arr[ii,jj]=params['T']
+            P_fusion_arr[ii,jj]=params['P_DT_alpha']*5
+            Q_arr[ii,jj]=Q
+            P_heat_arr[ii,jj]=params['P_heat']
+            P_el_arr[ii,jj]=P_el
+
+
+
+
+    plt.figure()
+    cs2=plt.contour(T_target_arr,ne_arr,P_el_arr,colors='k',levels=5)
+    plt.clabel(cs2,inline=True,inline_spacing=5, fmt="%.0f", fontsize=9)
+
+
+    cs3=plt.contour(T_target_arr,ne_arr,Q_arr,colors='blue',levels=5)
+    plt.clabel(cs3,inline=True,inline_spacing=5, fmt="%.2f", fontsize=9)
+
+
+    cs3=plt.contour(T_target_arr,ne_arr,P_heat_arr,colors='r',levels=5)
+    plt.clabel(cs3,inline=True,inline_spacing=5, fmt="%.0f", fontsize=9)
+
+
+
+    handles = [plt.Line2D([0], [0], color="k", lw=1, label=r'$P_{el}$ [MW]'),
+        plt.Line2D([0], [0], color="blue", lw=1, label="Q"),
+        plt.Line2D([0], [0], color="r", lw=1, label=r'$P_{HCD}$ [MW]'),]
+    plt.legend(handles=handles, loc="lower left",fontsize=9)
+
+    plt.ylabel(r'$<n_e>$ [10$^{20}$m$^{-3}$]')
+    plt.xlabel(r'$<T>$ [keV]')
+    plt.subplots_adjust(left=0.2, right=0.9, top=0.9, bottom=0.2)
+    plt.show()
+
+if __name__ == "__main__":
+    main()
